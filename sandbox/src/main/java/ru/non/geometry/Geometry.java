@@ -6,9 +6,8 @@ import ru.non.geometry.figures.Square;
 public class Geometry {
 
     public static void main(String[] args) {
-        Square.printSquareArea(3);
-        Rectangle.printRectangleArea(3, 5);
-
+        Square.printSquareArea(new Square(4));
+        Rectangle.printRectangleArea(new Rectangle(3, 5));
     }
 
 }

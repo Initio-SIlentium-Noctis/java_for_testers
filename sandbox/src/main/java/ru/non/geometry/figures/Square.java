@@ -2,14 +2,26 @@ package ru.non.geometry.figures;
 
 public class Square {
 
-    public static void printSquareArea(double side) {
-        String text = String.format("Площадь квадрата со стороной %f = %f " + side, squareArea(side));
+    private double side;
+
+    public Square(double side) {
+        this.side = side;
+    }
+
+    public static void printSquareArea(Square s) {
+        String text = String.format("Площадь квадрата со стороной %f = %f ", s.side, s.squareArea());
         System.out.println(text);
     }
 
-    private static double squareArea(double a) {
-        return a * a;
+    public double squarePerimeter() {
+        return this.side * 4;
     }
+
+    public double squareArea() {
+        return this.side * this.side;
+    }
+
+
 
 
 }
