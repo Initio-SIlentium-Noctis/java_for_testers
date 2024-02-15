@@ -17,7 +17,7 @@ public class Triangle {
     }
 
     public double triangleArea() {
-        double p = 0.5 * (this.a + this.b + this.c);
+        double p = 0.5 * trianglePerimeter();
         return Math.sqrt(p * (p - this.a) * (p - this.b) * (p - this.c));
     }
 
