@@ -19,4 +19,31 @@ public class TriangleTests {
         Assertions.assertEquals(14.696938456699069, result);
     }
 
+    @Test
+    void checkTriangleSideIsPositive() {
+        try {
+            new Triangle(-5, 6, 7);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+        try {
+            new Triangle(5, -6, 7);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+        try {
+            new Triangle(5, 6, -7);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+        try {
+            new Triangle(5, 0, 7);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+    }
+
+    @Test
+    void checkTriangleSidesSum() {
+        try {
+            new Triangle(5, 6, 12);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+    }
 }
