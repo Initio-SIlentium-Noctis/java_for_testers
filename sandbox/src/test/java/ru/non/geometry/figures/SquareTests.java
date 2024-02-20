@@ -19,4 +19,16 @@ public class SquareTests {
         Assertions.assertEquals(25, result);
     }
 
+    @Test
+    void checkSquareSideIsPositive() {
+        try {
+            new Square(-4);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+        try {
+            new Square(0);
+            Assertions.fail();
+        } catch(IllegalArgumentException exception) {}
+    }
+
 }
