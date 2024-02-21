@@ -46,4 +46,14 @@ public class TriangleTests {
             Assertions.fail();
         } catch(IllegalArgumentException exception) {}
     }
+
+    @Test
+    void checkTriangleEquality() {
+        Triangle t = new Triangle(5, 6, 7);
+
+        if (!t.equals(new Triangle(5, 6, 7)) || !t.equals(new Triangle(5, 7, 6)) || !t.equals(new Triangle(6, 5, 7)) || !t.equals(new Triangle(6, 7, 5)) || !t.equals(new Triangle(7, 5, 6)) || !t.equals(new Triangle(7, 6, 5))) {
+            Assertions.fail();
+        }
+    }
+
 }
