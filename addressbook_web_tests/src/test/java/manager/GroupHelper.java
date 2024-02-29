@@ -48,8 +48,8 @@ public class GroupHelper extends HelperBase {
 
     private void fillGroupForm(GroupData group) {
         type(By.name("group_name"), group.name());
-        type(By.name("group_header"), group.name());
-        type(By.name("group_footer"), group.name());
+        type(By.name("group_header"), group.header());
+        type(By.name("group_footer"), group.footer());
     }
 
     private void submitGroupCreation() {
