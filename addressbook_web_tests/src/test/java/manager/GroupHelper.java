@@ -30,19 +30,19 @@ public class GroupHelper extends HelperBase {
         returnToGroupsPage();
     }
 
-    public void removeGroup() {
-        openGroupsPage();
-        selectGroup();
-        removeSelectedGroup();
-        returnToGroupsPage();
-    }
-
     public void modifyGroup(GroupData modifiedGroup) {
         openGroupsPage();
         selectGroup();
         initGroupModification();
         fillGroupForm(modifiedGroup);
         submitGroupModification();
+        returnToGroupsPage();
+    }
+
+    public void removeGroup() {
+        openGroupsPage();
+        selectGroup();
+        removeSelectedGroup();
         returnToGroupsPage();
     }
 
