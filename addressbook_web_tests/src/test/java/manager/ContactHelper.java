@@ -46,6 +46,12 @@ public class ContactHelper extends HelperBase {
         returnToContactsPage();
     }
 
+    public void removeAllContacts() {
+        openContactsPage();
+        selectAllContacts();
+        removeSelectedContacts();
+    }
+
     private void fillContactForm(ContactData contact) {
         type(By.name("firstname"), contact.firstname());
         type(By.name("lastname"), contact.lastname());
@@ -54,12 +60,28 @@ public class ContactHelper extends HelperBase {
         type(By.name("mobile"), contact.phone());
     }
 
+    private void selectAllContacts() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes) {
+            checkbox.click();
+        }
+    }
+
+    public int getCount() {
+        openContactsPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
+    }
+
     private void submitContactCreation() {
         click(By.name("submit"));
     }
 
     private void initContactCreation() {
         click(By.linkText("add new"));
+    }
+
+    private void removeSelectedContacts() {
+        click(By.cssSelector("input[value='Delete']"));
     }
 
     private void removeSelectedContact() {

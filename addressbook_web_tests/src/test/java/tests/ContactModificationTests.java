@@ -10,6 +10,6 @@ public class ContactModificationTests extends TestBase {
         if (!app.contacts().isContactPresent()) {
             app.contacts().createContact(new ContactData("Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574"));
         }
-        app.contacts().modifyContact(new ContactData().withFirstName("Сергей"));
+        app.contacts().modifyContact(new ContactData("Сергей", "", "", "", ""));
     }
 }

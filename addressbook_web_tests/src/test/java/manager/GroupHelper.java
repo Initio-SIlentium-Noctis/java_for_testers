@@ -39,10 +39,28 @@ public class GroupHelper extends HelperBase {
         returnToGroupsPage();
     }
 
+    public void removeAllGroups() {
+        openGroupsPage();
+        selectAllGroups();
+        removeSelectedGroups();
+    }
+
     private void fillGroupForm(GroupData group) {
         type(By.name("group_name"), group.name());
         type(By.name("group_header"), group.header());
         type(By.name("group_footer"), group.footer());
+    }
+
+    private void selectAllGroups() {
+        var checkboxes = manager.driver.findElements(By.name("selected[]"));
+        for (var checkbox : checkboxes) {
+            checkbox.click();
+        }
+    }
+
+    public int getCount() {
+        openGroupsPage();
+        return manager.driver.findElements(By.name("selected[]")).size();
     }
 
     private void submitGroupCreation() {
@@ -73,21 +91,5 @@ public class GroupHelper extends HelperBase {
         click(By.name("selected[]"));
     }
 
-    public int getCount() {
-        openGroupsPage();
-        return manager.driver.findElements(By.name("selected[]")).size();
-    }
 
-    public void removeAllGroups() {
-        openGroupsPage();
-        selectAllGroups();
-        removeSelectedGroups();
-    }
-
-    private void selectAllGroups() {
-        var checkboxes = manager.driver.findElements(By.name("selected[]"));
-        for (var checkbox : checkboxes) {
-            checkbox.click();
-        }
-    }
 }
