@@ -13,17 +13,6 @@ public class ContactCreationTests extends TestBase {
 
     public static List<ContactData> contactProvider() {
         var result = new ArrayList<ContactData>();
-//        for (var firstname : List.of("", randomFirstName())) {
-//            for (var lastname : List.of("", randomLastName())) {
-//                for (var address : List.of("", randomAddress())) {
-//                    for (var email : List.of("", randomEmail())) {
-//                        for (var phone : List.of("", randomPhone())) {
-//                            result.add(new ContactData(firstname, lastname, address, email, phone));
-//                        }
-//                    }
-//                }
-//            }
-//        }
         for (int i = 0; i < 10; i++) {
             result.add(new ContactData(randomFirstName(), randomLastName(), randomAddress(), randomEmail(), randomPhone()));
         }
