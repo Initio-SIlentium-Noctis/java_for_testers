@@ -16,6 +16,7 @@ public class ContactCreationTests extends TestBase {
         var result = new ArrayList<ContactData>();
         for (int i = 0; i < 10; i++) {
             result.add(new ContactData()
+                    .withId("")
                     .withFirstName(randomFirstName())
                     .withLastName(randomLastName())
                     .withAddress(randomAddress())
