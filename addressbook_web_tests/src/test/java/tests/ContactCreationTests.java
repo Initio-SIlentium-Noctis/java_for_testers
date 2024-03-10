@@ -47,10 +47,7 @@ public class ContactCreationTests extends TestBase {
                 .withFirstName(newContacts.get(newContacts.size() - 1).firstname())
                 .withLastName(newContacts.get(newContacts.size() - 1).lastname()));
         expectedList.sort(compareById);
-        for (int i = 0 ; i < newContacts.size(); i++) {
-            Assertions.assertEquals(newContacts.get(i).firstname(), expectedList.get(i).firstname());
-            Assertions.assertEquals(newContacts.get(i).lastname(), expectedList.get(i).lastname());
-        }
+        Assertions.assertEquals(newContacts, expectedList);
     }
 
     @ParameterizedTest
