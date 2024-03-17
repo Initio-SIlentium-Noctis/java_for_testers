@@ -3,7 +3,7 @@ package model;
 public record ContactData(String id, String firstname, String lastname, String address, String email, String phone, String photo) {
 
     public ContactData() {
-        this("","","","","","", "");
+        this("","","","","","", "src/test/resources/images/avatar.png");
     }
 
     public ContactData withId(String id) {

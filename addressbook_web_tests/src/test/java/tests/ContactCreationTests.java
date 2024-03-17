@@ -2,7 +2,9 @@ package tests;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.CommonFunctions;
 import model.ContactData;
+import model.GroupData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,17 +28,28 @@ public class ContactCreationTests extends TestBase {
         return result;
     }
 
+    public static List<ContactData> singleRandomContact(){
+        return List.of(new ContactData()
+                .withId("")
+                .withFirstName(CommonFunctions.randomFirstName())
+                .withLastName(CommonFunctions.randomLastName())
+                .withAddress(CommonFunctions.randomAddress())
+                .withEmail(CommonFunctions.randomEmail())
+                .withPhone(CommonFunctions.randomPhone())
+                .withPhoto(CommonFunctions.randomFile("src/test/resources/images")));
+    }
+
     public static List<ContactData> negativeContactProvider() {
-        var result = new ArrayList<ContactData>(List.of(new ContactData ("", "Сергей'", "", "", "", "", "")));
+        var result = new ArrayList<ContactData>(List.of(new ContactData().withFirstName("Сергей'")));
         return result;
     }
 
     @ParameterizedTest
-    @MethodSource("contactProvider")
-    public void canCreateMultipleContacts(ContactData contact) {
-        var oldContacts = app.contacts().getList();
+    @MethodSource("singleRandomContact")
+    public void canCreateContact(ContactData contact) {
+        var oldContacts = app.hbm().getContactList();
         app.contacts().createContact(contact);
-        var newContacts = app.contacts().getList();
+        var newContacts = app.hbm().getContactList();
         Comparator<ContactData> compareById = (o1, o2) -> {
             return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
         };
@@ -51,37 +64,69 @@ public class ContactCreationTests extends TestBase {
     }
 
     @ParameterizedTest
+    @MethodSource("contactProvider")
+    public void canCreateMultipleContacts(ContactData contact) {
+        var oldContacts = app.hbm().getContactList();
+        app.contacts().createContact(contact);
+        var newContacts = app.hbm().getContactList();
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+        newContacts.sort(compareById);
+        var expectedList = new ArrayList<>(oldContacts);
+        expectedList.add(contact
+                .withId(newContacts.get(newContacts.size() - 1).id())
+                .withFirstName(newContacts.get(newContacts.size() - 1).firstname())
+                .withLastName(newContacts.get(newContacts.size() - 1).lastname()));
+        expectedList.sort(compareById);
+        Assertions.assertEquals(newContacts, expectedList);
+    }
+
+    @ParameterizedTest
+    @MethodSource("singleRandomContact")
+    public void canCreateContactInGroup(ContactData contact) {
+        if (app.hbm().getGroupCount() == 0) {
+            app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
+        }
+        var group = app.hbm().getGroupList().get(0);
+        var oldRelated = app.hbm().getContactsInGroup(group);
+        app.contacts().createContactInGroup(contact, group);
+        var newRelated = app.hbm().getContactsInGroup(group);
+        Assertions.assertEquals(oldRelated.size() + 1, newRelated.size());
+    }
+
+    @ParameterizedTest
     @MethodSource("negativeContactProvider")
     public void canNotCreateContact(ContactData contact) {
-        int contactCount = app.contacts().getCount();
+        var oldContacts = app.hbm().getContactList();
         app.contacts().createContact(contact);
-        int newContactCount = app.contacts().getCount();
-        Assertions.assertEquals(contactCount, newContactCount);
+        var newContacts = app.hbm().getContactList();
+        Assertions.assertEquals(oldContacts.size(), newContacts.size());
     }
 
     @Test
     public void canCreateEmptyContact() {
-        app.contacts().createContact(new ContactData("","","","","","", ""));
+        app.contacts().createContact(new ContactData());
     }
 
     @Test
     public void canCreateContactWithFirstNameOnly() {
-        app.contacts().createContact(new ContactData("","Сергей","","","","", ""));
+        app.contacts().createContact(new ContactData().withFirstName("Сергей"));
     }
 
     @Test
     public void canCreateContactWithLastNameOnly() {
-        app.contacts().createContact(new ContactData("","","Иванов","","","", ""));
+        app.contacts().createContact(new ContactData().withLastName("Иванов"));
     }
 
     @Test
     public void canCreateContactWithEmailOnly() {
-        app.contacts().createContact(new ContactData("","","","","petrov123@gmail.com","", ""));
+        app.contacts().createContact(new ContactData().withEmail("petrov123@gmail.com"));
     }
 
     @Test
     public void canCreateContactWithPhoneOnly() {
-        app.contacts().createContact(new ContactData("","","","","","+79262545574", ""));
+        app.contacts().createContact(new ContactData().withPhone("+79262545574"));
     }
 
 
