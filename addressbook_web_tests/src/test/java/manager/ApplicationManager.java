@@ -33,6 +33,10 @@ public class ApplicationManager {
         }
     }
 
+    public void refreshPage() {
+        driver.navigate().refresh();
+    }
+
     public LoginHelper session() {
         if (session == null) {
             session = new LoginHelper(this);
