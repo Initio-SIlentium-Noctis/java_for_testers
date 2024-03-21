@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Random;
 
 public class ContactModificationTests extends TestBase {
@@ -43,19 +44,48 @@ public class ContactModificationTests extends TestBase {
         }
         var oldContacts = app.hbm().getContactList();
         var oldGroups = app.hbm().getGroupList();
-        var rnd = new Random();
-        var contactIndex = rnd.nextInt(oldContacts.size());
-        var groupIndex = rnd.nextInt(oldGroups.size());
-        var contact = oldContacts.get(contactIndex);
-        var group = oldGroups.get(groupIndex);
-        var oldRelated = app.hbm().getContactsInGroup(group);
-        if (oldRelated.contains(contact)) {
-            oldRelated.remove(oldRelated.indexOf(contact));
+
+        ContactData applicableContact = null; // подходящий контакт
+        GroupData applicableGroup = null; // подходящая группа
+
+        for (var contact : oldContacts) {
+            for (var group : oldGroups) {
+                System.out.println("Текущий контакт : " + contact + " . Текущая группа : " + group);
+                if (!app.hbm().getContactsInGroup(group).contains(contact)) {
+                    System.out.println("Найден контакт, который не находится в текущей группе");
+                    applicableContact = contact;
+                    applicableGroup = group;
+                    System.out.println("Прерываем цикл");
+                    break;
+                }
+            }
         }
-        app.contacts().addContactToGroup(contact, group);
-        var newRelated = app.hbm().getContactsInGroup(group);
-        Assertions.assertFalse(oldRelated.contains(contact));
-        Assertions.assertTrue(newRelated.contains(contact));
+
+        if (applicableContact == null) {
+            System.out.println("Нет подходящего контакта. Создаём его");
+            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574", "src/test/resources/images/avatar.png"));
+            applicableContact = app.hbm().getLastCreatedContact();
+            System.out.println("последний созданный контакт : " + applicableContact);
+            applicableGroup = oldGroups.get(0);
+        }
+
+        var oldRelated = app.hbm().getContactsInGroup(applicableGroup);
+        app.contacts().addContactToGroup(applicableContact, applicableGroup);
+        var newRelated = app.hbm().getContactsInGroup(applicableGroup);
+        Comparator<ContactData> compareById = (o1, o2) -> {
+            return Integer.compare(Integer.parseInt(o1.id()), Integer.parseInt(o2.id()));
+        };
+
+        var oldExpectedList = new ArrayList<>(oldRelated);
+        var newExpectedList = new ArrayList<>(oldExpectedList);
+        newExpectedList.add(applicableContact);
+        oldExpectedList.sort(compareById);
+        newExpectedList.sort(compareById);
+        oldRelated.sort(compareById);
+        newRelated.sort(compareById);
+
+        Assertions.assertEquals(oldRelated, oldExpectedList);
+        Assertions.assertEquals(newRelated, newExpectedList);
     }
 
     @Test

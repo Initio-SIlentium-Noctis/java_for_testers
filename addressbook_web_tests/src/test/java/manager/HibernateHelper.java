@@ -78,6 +78,12 @@ public class HibernateHelper extends HelperBase {
         }));
     }
 
+    public ContactData getLastCreatedContact() {
+        return convert((ContactRecord) sessionFactory.fromSession(session -> {
+            return session.createQuery("from ContactRecord ORDER BY id DESC LIMIT 1", ContactRecord.class).getSingleResult();
+        }));
+    }
+
     public long getGroupCount() {
         return sessionFactory.fromSession(session -> {
             return session.createQuery("select count (*) from GroupRecord", Long.class).getSingleResult();
