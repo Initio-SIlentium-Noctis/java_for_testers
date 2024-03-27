@@ -35,8 +35,8 @@ public class ContactCreationTests extends TestBase {
                 .withLastName(CommonFunctions.randomLastName())
                 .withAddress(CommonFunctions.randomAddress())
                 .withEmail(CommonFunctions.randomEmail())
-                .withPhone(CommonFunctions.randomPhone())
-                .withPhoto(CommonFunctions.randomFile("src/test/resources/images")));
+                .withPhoto(CommonFunctions.randomFile("src/test/resources/images"))
+                .withMobilePhone(CommonFunctions.randomPhone()));
     }
 
     public static List<ContactData> negativeContactProvider() {
@@ -125,8 +125,8 @@ public class ContactCreationTests extends TestBase {
     }
 
     @Test
-    public void canCreateContactWithPhoneOnly() {
-        app.contacts().createContact(new ContactData().withPhone("+79262545574"));
+    public void canCreateContactWithMobilePhoneOnly() {
+        app.contacts().createContact(new ContactData().withMobilePhone("+79262545574"));
     }
 
 

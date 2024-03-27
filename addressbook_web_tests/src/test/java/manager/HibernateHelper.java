@@ -10,6 +10,7 @@ import org.hibernate.cfg.Configuration;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class HibernateHelper extends HelperBase {
 
@@ -27,19 +28,11 @@ public class HibernateHelper extends HelperBase {
     }
 
     static List<GroupData> convertGroupList(List<GroupRecord> records) {
-        List<GroupData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
     static List<ContactData> convertContactList(List<ContactRecord> records) {
-        List<ContactData> result = new ArrayList<>();
-        for (var record : records) {
-            result.add(convert(record));
-        }
-        return result;
+        return records.stream().map(HibernateHelper::convert).collect(Collectors.toList());
     }
 
     private static GroupData convert(GroupRecord record) {
@@ -47,7 +40,18 @@ public class HibernateHelper extends HelperBase {
     }
 
     private static ContactData convert(ContactRecord record) {
-        return new ContactData().withId("" + record.id).withFirstName(record.firstname).withLastName(record.lastname).withAddress(record.address);
+        return new ContactData()
+                .withId("" + record.id)
+                .withFirstName(record.firstname)
+                .withLastName(record.lastname)
+                .withAddress(record.address)
+                .withEmail(record.email)
+                .withEmail2(record.email2)
+                .withEmail3(record.email3)
+                .withHomePhone(record.home)
+                .withMobilePhone(record.mobile)
+                .withWorkPhone(record.work)
+                .withSecondaryPhone(record.phone2);
     }
 
     private static GroupRecord convert(GroupData data) {

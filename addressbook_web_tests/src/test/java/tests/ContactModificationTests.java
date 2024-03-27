@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.Random;
 
 public class ContactModificationTests extends TestBase {
@@ -15,7 +14,7 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void canModifyContact() {
         if (!app.contacts().isContactPresent()) {
-            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574", "src/test/resources/images/avatar.png"));
+            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "", "","src/test/resources/images/avatar.png", "", "+79262545574", "", ""));
         }
         var oldContacts = app.hbm().getContactList();
         var rnd = new Random();
@@ -36,7 +35,7 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void canAddContactToGroup() {
         if (!app.contacts().isContactPresent()) {
-            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574", "src/test/resources/images/avatar.png"));
+            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "", "","src/test/resources/images/avatar.png", "", "+79262545574", "", ""));
         }
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
@@ -63,7 +62,7 @@ public class ContactModificationTests extends TestBase {
 
         if (applicableContact == null) {
             System.out.println("Нет подходящего контакта. Создаём его");
-            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574", "src/test/resources/images/avatar.png"));
+            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "", "","src/test/resources/images/avatar.png", "", "+79262545574", "", ""));
             applicableContact = app.hbm().getLastCreatedContact();
             System.out.println("последний созданный контакт : " + applicableContact);
             applicableGroup = oldGroups.get(0);
@@ -91,7 +90,7 @@ public class ContactModificationTests extends TestBase {
     @Test
     public void canRemoveContactFromGroup() {
         if (!app.contacts().isContactPresent()) {
-            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "+79262545574", "src/test/resources/images/avatar.png"));
+            app.contacts().createContact(new ContactData("", "Пётр", "Иванов", "Г.Москва, ул. Мира 6, кв.25", "ivanov24@gmail.com", "", "","src/test/resources/images/avatar.png", "", "+79262545574", "", ""));
         }
         if (app.hbm().getGroupCount() == 0) {
             app.hbm().createGroup(new GroupData("", "group name", "group header", "group footer"));
