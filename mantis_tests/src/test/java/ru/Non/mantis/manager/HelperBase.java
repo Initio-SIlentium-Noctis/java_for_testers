@@ -28,4 +28,12 @@ public class HelperBase {
     protected boolean isElementPresent(By locator) {
         return manager.driver().findElements(locator).size() > 0;
     }
+
+    protected void openUrl(String url) {
+        manager.driver().get(url);
+    }
+
+    protected void openHomePage() {
+        manager.driver().get(manager.property("web.baseUrl"));
+    }
 }
