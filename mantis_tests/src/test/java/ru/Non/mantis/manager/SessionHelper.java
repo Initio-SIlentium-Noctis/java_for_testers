@@ -20,7 +20,7 @@ public class SessionHelper extends HelperBase {
         return isElementPresent(By.cssSelector("span.user-info"));
     }
 
-    public void register(String user, String email) {
+    public void registerUser(String user, String email) {
         click(By.xpath("//a[contains(text(), 'Signup for a new account')]"));
         type(By.id("username"), user);
         type(By.id("email-field"), email);
@@ -28,7 +28,7 @@ public class SessionHelper extends HelperBase {
         click(By.xpath("//a[contains(text(), 'Proceed')]"));
     }
 
-    public void verify(String user, String password, String url) {
+    public void verifyUser(String user, String password, String url) {
         openUrl(url);
         type(By.id("realname"), user);
         type(By.id("password"), password);

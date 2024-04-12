@@ -1,11 +1,9 @@
 package ru.Non.mantis.manager;
 
 import jakarta.mail.*;
-import org.eclipse.angus.mail.imap.protocol.FLAGS;
 import ru.Non.mantis.model.MailMessage;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;

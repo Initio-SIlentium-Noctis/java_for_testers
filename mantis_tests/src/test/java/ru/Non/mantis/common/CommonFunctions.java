@@ -2,6 +2,7 @@ package ru.Non.mantis.common;
 
 import java.util.Random;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -15,5 +16,15 @@ public class CommonFunctions {
                 .map(Character::toString)
                 .collect(Collectors.joining());
         return result;
+    }
+
+    public static String extractUrl(String text) {
+        var pattern = Pattern.compile("http://\\S*");
+        var matcher = pattern.matcher(text);
+        if (matcher.find()) {
+            return text.substring(matcher.start(), matcher.end());
+        } else {
+            throw new IllegalArgumentException("Could not extract url from mail");
+        }
     }
 }
