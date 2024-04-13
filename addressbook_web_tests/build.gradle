@@ -9,6 +9,16 @@ repositories {
     mavenCentral()
 }
 
+def allureVersion = '2.24.0'
+def aspectJVersion = '1.9.20.1'
+
+configurations {
+    agent {
+        canBeResolved = true
+        canBeConsumed = true
+    }
+}
+
 dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
@@ -20,9 +30,14 @@ dependencies {
     implementation 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.15.0'
     implementation 'com.mysql:mysql-connector-j:8.1.0'
     implementation 'org.hibernate.orm:hibernate-core:6.3.0.CR1'
+
+    agent "org.aspectj:aspectjweaver:$aspectJVersion"
+    testImplementation platform("io.qameta.allure:allure-bom:$allureVersion")
+    testImplementation "io.qameta.allure:allure-junit5"
 }
 
 test {
+    jvmArgs = [ "-javaagent:${configurations.agent.singleFile}" ]
     compileJava.options.encoding = 'UTF-8'
     tasks.withType(JavaCompile) {
         options.encoding = 'UTF-8'
